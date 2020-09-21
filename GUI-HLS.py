@@ -12,9 +12,7 @@ from PyQt5.QtCore import Qt, QObject, pyqtSignal, QThread
 
 class Window(Display):
     def __init__(self):
-        print('1\n')
         super(Window, self).__init__(ui_filename='UI-HLS.ui')
-        print('2\n')
         self.associatePvs()
 
         self.btn_initRack.clicked.connect(self.initRack_func)
@@ -53,8 +51,6 @@ class Window(Display):
 
         self.updateViews()
         self.p1.vb.sigResized.connect(self.updateViews)
-
-        print('3\n')
 
     def updateViews(self):
         ## view has resized; update auxiliary views to match

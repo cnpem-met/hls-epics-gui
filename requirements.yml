@@ -1,0 +1,7 @@
+name: hlsGUI-env
+channels:
+  - conda-forge
+  - pydm-tag
+  - defaults
+dependencies:
+  - pydm
