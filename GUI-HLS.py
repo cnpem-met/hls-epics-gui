@@ -52,6 +52,9 @@ class Window(Display):
         self.updateViews()
         self.p1.vb.sigResized.connect(self.updateViews)
 
+        self.plot.setTimeSpan(60)
+        self.plot.setUpdatesAsynchronously(True)
+
     def updateViews(self):
         ## view has resized; update auxiliary views to match
         self.p2.setGeometry(self.p1.vb.sceneBoundingRect())
@@ -76,19 +79,17 @@ class Window(Display):
             for j in range (5):
                 if (i % 2 == 0):
                     channel = self.data_levelPV[int(i/2)][j]
-                    name = "R"+str(int((i+1)/2))+"-S"+str(int(j+1))+"-Level"
+                    name = "R"+str(int((i+1)/2)+1)+"-S"+str(int(j+1))+"-Level"
                     rightYAxis = False
                 else:
                     channel = self.data_tempPV[int(i/2)][j]
-                    name = "R"+str(int((i+1)/2))+"-S"+str(int(j+1))+"-Temp"
+                    name = "R"+str(int((i+1)/2)+1)+"-S"+str(int(j+1))+"-Temp"
                     rightYAxis = True
                 
                 curveCheck = self.isCurveAtPlot(name)                
                 
                 if (self.checkPlots[i][j].isChecked() and not curveCheck[0]):
                     curve = self.plot.addYChannel(y_channel="ca://"+channel.pvname, name=name, color=QColor(random.uniform (0,255), random.uniform (0,255), random.uniform (0,255)))
-                    self.plot.setTimeSpan(15)
-                    self.plot.setUpdatesAsynchronously(True)
                     if (rightYAxis):                       
                         self.p2.addItem(curve)
                     print(self.plot.listDataItems())
@@ -126,14 +127,14 @@ class Window(Display):
         self.cmdPV = PV('cmd')
         self.acqPV = PV('acq_time')
         self.rack_state = [PV('state_rack1'), PV('state_rack2'), PV('state_rack3'), PV('state_rack4')]
-        self.data_levelPV = [[PV('HLS:R1_S1_L'), PV('HLS:R1_S2_L'), PV('HLS:R1_S3_L'), PV('HLS:R1_S4_L'), PV('HLS:R1_S5_L')],
-                           [PV('HLS:R2_S1_L'), PV('HLS:R2_S2_L'), PV('HLS:R2_S3_L'), PV('HLS:R2_S4_L'), PV('HLS:R2_S5_L')],
-                           [PV('HLS:R3_S1_L'), PV('HLS:R3_S2_L'), PV('HLS:R3_S3_L'), PV('HLS:R3_S4_L'), PV('HLS:R3_S5_L')],
-                           [PV('HLS:R4_S1_L'), PV('HLS:R4_S2_L'), PV('HLS:R4_S3_L'), PV('HLS:R4_S4_L'), PV('HLS:R4_S5_L')]]
-        self.data_tempPV = [[PV('HLS:R1_S1_T'), PV('HLS:R1_S2_T'), PV('HLS:R1_S3_T'), PV('HLS:R1_S4_T'), PV('HLS:R1_S5_T')],
-                          [PV('HLS:R2_S1_T'), PV('HLS:R2_S2_T'), PV('HLS:R2_S3_T'), PV('HLS:R2_S4_T'), PV('HLS:R2_S5_T')],
-                          [PV('HLS:R3_S1_T'), PV('HLS:R3_S2_T'), PV('HLS:R3_S3_T'), PV('HLS:R3_S4_T'), PV('HLS:R3_S5_T')],
-                          [PV('HLS:R4_S1_T'), PV('HLS:R4_S2_T'), PV('HLS:R4_S3_T'), PV('HLS:R4_S4_T'), PV('HLS:R4_S5_T')]]
+        self.data_levelPV = [[PV('HLS:C1_S1_LEVEL'), PV('HLS:C1_S2_LEVEL'), PV('HLS:C1_S3_LEVEL'), PV('HLS:C1_S4_LEVEL'), PV('HLS:C1_S5_LEVEL')],
+                           [PV('HLS:C2_S1_LEVEL'), PV('HLS:C2_S2_LEVEL'), PV('HLS:C2_S3_LEVEL'), PV('HLS:C2_S4_LEVEL'), PV('HLS:C2_S5_LEVEL')],
+                           [PV('HLS:C3_S1_LEVEL'), PV('HLS:C3_S2_LEVEL'), PV('HLS:C3_S3_LEVEL'), PV('HLS:C3_S4_LEVEL'), PV('HLS:C3_S5_LEVEL')],
+                           [PV('HLS:C4_S1_LEVEL'), PV('HLS:C4_S2_LEVEL'), PV('HLS:C4_S3_LEVEL'), PV('HLS:C4_S4_LEVEL'), PV('HLS:C4_S5_LEVEL')]]
+        self.data_tempPV = [[PV('HLS:C1_S1_TEMP'), PV('HLS:C1_S2_TEMP'), PV('HLS:C1_S3_TEMP'), PV('HLS:C1_S4_TEMP'), PV('HLS:C1_S5_TEMP')],
+                          [PV('HLS:C2_S1_TEMP'), PV('HLS:C2_S2_TEMP'), PV('HLS:C2_S3_TEMP'), PV('HLS:C2_S4_TEMP'), PV('HLS:C2_S5_TEMP')],
+                          [PV('HLS:C3_S1_TEMP'), PV('HLS:C3_S2_TEMP'), PV('HLS:C3_S3_TEMP'), PV('HLS:C3_S4_TEMP'), PV('HLS:C3_S5_TEMP')],
+                          [PV('HLS:C4_S1_TEMP'), PV('HLS:C4_S2_TEMP'), PV('HLS:C4_S3_TEMP'), PV('HLS:C4_S4_TEMP'), PV('HLS:C4_S5_TEMP')]]
     
     def verifyRackState (self):
         current_state = [self.rack_state[0].get(), self.rack_state[1].get(), self.rack_state[2].get(), self.rack_state[3].get()]
